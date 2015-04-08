@@ -29,4 +29,4 @@ class Entry(Base):
     created = Column(DateTime, default=datetime.utcnow())
     edited = Column(DateTime, default=datetime.utcnow())
 
-Index('my_index', Entry.title, unique=True, mysql_length=255)
+Index('entries_index', Entry.title, unique=True, mysql_length=255)
