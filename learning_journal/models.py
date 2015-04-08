@@ -3,7 +3,11 @@ from sqlalchemy import (
     Index,
     Integer,
     Text,
+    String,
+    DateTime,
     )
+
+from datetime import datetime
 
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -20,9 +24,9 @@ Base = declarative_base()
 class Entry(Base):
     __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)
-    title = Column(Text, nullable=False)
+    title = Column(String(255), nullable=False)
     body = Column(Text, nullable = True)
-    created = Column(DateTime, default=datetime.datetime.utcnow)
-    edited = Column(DateTime, default=datetime.datetime.utcnow)
+    created = Column(DateTime, default=datetime.utcnow())
+    edited = Column(DateTime, default=datetime.utcnow())
 
 Index('my_index', Entry.title, unique=True, mysql_length=255)
