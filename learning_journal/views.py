@@ -43,9 +43,15 @@ def create(request):
         return HTTPFound(location=request.route_url('home'))
     return {'form': form, 'action': request.matchdict.get('action')}
 
-@view_config(route_name='action', match_param='action=edit', renderer='string')
+@view_config(route_name='action', match_param='action=edit', renderer='templates/edit.jinja2')
 def update(request):
-    return 'edit page'
+    this_id = request.params.get('id', -1)
+    entry = Entry.by_id(this_id)
+    form = EntryCreateForm(request.POST)
+    if request.method == 'POST' and form.validate():
+        form.populate_obj(entry)
+        return HTTPFound(location=request.route_url('home'))
+    return {'form': form, 'action': request.matchdict.get('action')}
 
 
 conn_err_msg = """\
