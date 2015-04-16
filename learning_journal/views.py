@@ -2,7 +2,7 @@ from pyramid.response import Response
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.httpexceptions import HTTPFound
-from .forms import EntryCreateForm
+from .forms import (EntryCreateForm, EntryEditForm)
 
 from sqlalchemy.exc import DBAPIError
 
@@ -47,9 +47,11 @@ def create(request):
 def update(request):
     this_id = request.params.get('id', -1)
     entry = Entry.by_id(this_id)
-    form = EntryCreateForm(request.POST)
+    form = EntryEditForm(request.POST, entry)
     if request.method == 'POST' and form.validate():
         form.populate_obj(entry)
+#        form.title.data = entry.title
+#        form.body.data = entry.body
         return HTTPFound(location=request.route_url('home'))
     return {'form': form, 'action': request.matchdict.get('action')}
 
